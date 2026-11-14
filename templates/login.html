@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Login Portal STI-A – ITSI{% endblock %}
+{% block content %}
+<section class="min-h-[calc(100vh-150px)] flex items-center py-12 px-4 sm:px-6">
+  <div class="max-w-6xl w-full mx-auto grid lg:grid-cols-[1.1fr_.9fr] gap-10 items-center">
+    <div class="hidden lg:block relative">
+      <div class="absolute -top-16 -left-10 w-64 h-64 bg-emerald-500/10 blur-[90px] rounded-full"></div>
+      <div class="relative">
+        <div class="section-kicker mb-5 flex items-center gap-2"><span class="w-8 h-px bg-emerald-400"></span> STI · ITSI DIGITAL CAMPUS</div>
+        <h1 class="display-font text-5xl xl:text-6xl font-bold leading-[1.08] text-white mb-6">Satu kelas.<br><span class="gradient-text">Satu ekosistem.</span><br>Saling bertumbuh.</h1>
+        <p class="text-slate-400 max-w-lg leading-7 text-lg">Ruang kolaborasi digital mahasiswa Sistem dan Teknologi Informasi untuk membangun budaya disiplin, transparansi, dan teknologi yang berdampak.</p>
+        <div class="grid grid-cols-3 gap-3 mt-10 max-w-xl">
+          <div class="glass rounded-2xl p-4"><i data-lucide="users" class="w-5 h-5 text-emerald-300 mb-3"></i><div class="text-2xl font-bold text-white">30</div><div class="text-xs text-slate-500">Mahasiswa</div></div>
+          <div class="glass rounded-2xl p-4"><i data-lucide="shield-check" class="w-5 h-5 text-cyan-300 mb-3"></i><div class="text-2xl font-bold text-white">01</div><div class="text-xs text-slate-500">Komunitas</div></div>
+          <div class="glass rounded-2xl p-4"><i data-lucide="activity" class="w-5 h-5 text-emerald-300 mb-3"></i><div class="text-2xl font-bold text-white">∞</div><div class="text-xs text-slate-500">Potensi</div></div>
+        </div>
+        <div class="mt-10 flex items-center gap-3 text-xs text-slate-500"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Secure class workspace · Agri-Tech & Cyber Systems</div>
+      </div>
+    </div>
+
+    <div class="w-full max-w-md mx-auto">
+      <div class="glass rounded-[2rem] p-7 sm:p-9 shadow-glow relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-52 h-52 bg-cyan-500/10 blur-[70px] rounded-full"></div>
+        <div class="relative">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-400/10 border border-emerald-300/25 flex items-center justify-center mb-6"><i data-lucide="fingerprint" class="w-7 h-7 text-emerald-300"></i></div>
+          <div class="section-kicker mb-2">MEMBER ACCESS</div>
+          <h2 class="display-font text-3xl font-bold text-white">Masuk ke portal</h2>
+          <p class="text-sm text-slate-400 mt-2 mb-8">Gunakan NIM atau username dan password akun kelas Anda.</p>
+
+          <form method="POST" action="{{ url_for('login') }}" class="space-y-5">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            <div>
+              <label for="identity" class="text-xs text-slate-300 font-semibold mb-2 block">NIM / Username</label>
+              <div class="relative"><i data-lucide="user-round" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i><input id="identity" name="identity" class="input-dark pl-11" placeholder="Contoh: 260203001 atau admin" autocomplete="username" required autofocus></div>
+            </div>
+            <div>
+              <label for="password" class="text-xs text-slate-300 font-semibold mb-2 block">Password</label>
+              <div class="relative"><i data-lucide="lock-keyhole" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i><input id="password" name="password" type="password" class="input-dark pl-11 pr-12" placeholder="Masukkan password" autocomplete="current-password" required><button type="button" id="togglePassword" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-emerald-300"><i data-lucide="eye" class="w-4 h-4"></i></button></div>
+            </div>
+            <button type="submit" class="btn-primary w-full rounded-xl py-3.5 font-bold text-sm flex items-center justify-center gap-2">Masuk ke Dashboard <i data-lucide="arrow-up-right" class="w-4 h-4"></i></button>
+          </form>
+
+          <a href="{{ url_for('index') }}" class="mt-6 flex justify-center items-center gap-2 text-xs text-slate-500 hover:text-emerald-300 transition"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali ke halaman publik</a>
+        </div>
+      </div>
+      <p class="text-center text-[11px] text-slate-600 mt-5">Akses terbatas untuk anggota kelas dan administrator STI.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  document.getElementById('togglePassword')?.addEventListener('click', function () {
+    const input = document.getElementById('password');
+    input.type = input.type === 'password' ? 'text' : 'password';
+    this.innerHTML = input.type === 'password' ? '<i data-lucide="eye" class="w-4 h-4"></i>' : '<i data-lucide="eye-off" class="w-4 h-4"></i>';
+    if (window.lucide) window.lucide.createIcons();
+  });
+</script>
+{% endblock %}

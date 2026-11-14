@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Pembagian Kelompok | Portal STI-A{% endblock %}
+{% block content %}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+  <a href="{{ url_for('index') }}" class="inline-flex text-xs text-slate-400 hover:text-pink-300 items-center gap-2 mb-4"><i data-lucide="arrow-left" class="w-4 h-4"></i> Beranda</a>
+  <div class="section-kicker mb-2">COURSE PROJECT GROUPS</div>
+  <h1 class="display-font text-3xl font-bold text-white">Pembagian Kelompok Mata Kuliah</h1>
+  <p class="text-xs text-slate-500 mt-2">Daftar kelompok tugas STI-A yang dibagikan oleh admin.</p>
+  <div class="space-y-5 mt-6">
+    {% for item in group_sets %}
+    <div class="glass rounded-2xl p-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div><div class="text-[10px] text-pink-300 uppercase tracking-wider">MATA KULIAH</div><h2 class="text-xl font-bold text-white mt-1">{{ item.course }}</h2><div class="text-xs text-slate-400 mt-1">Materi: {{ item.topic or 'Belum ditentukan' }}</div></div>
+        <div class="rounded-xl bg-slate-950/40 border border-white/5 px-4 py-3"><div class="digital-clock text-xl text-cyan-300">{{ item.group_count }} kelompok</div><div class="text-[9px] text-slate-500">Dibagikan {{ item.created_at.strftime('%d-%m-%Y') }}</div></div>
+      </div>
+      <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-3 mt-5">
+        {% for group_num in range(1,item.group_count+1) %}
+        <div class="rounded-xl bg-slate-950/35 border border-white/5 p-4">
+          <div class="flex items-center justify-between mb-3"><h3 class="text-sm font-bold text-emerald-300">Kelompok {{ group_num }}</h3><span class="text-[9px] text-slate-500">{{ item.members|selectattr('group_number','equalto',group_num)|list|length }} anggota</span></div>
+          <div class="space-y-2">
+            {% for member in item.members if member.group_number == group_num %}
+            <div class="flex items-center gap-2"><span class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center text-[9px] text-slate-400">{{ member.position }}</span><div class="min-w-0"><div class="text-xs text-slate-200">{{ member.student.name }}</div><div class="text-[9px] text-slate-600">{{ member.student.nim }}</div></div></div>
+            {% else %}<div class="text-[10px] text-slate-600">Belum ada anggota.</div>{% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}<div class="glass rounded-2xl p-10 text-center text-sm text-slate-500">Belum ada pembagian kelompok yang dipublikasikan.</div>{% endfor %}
+  </div>
+</section>
+{% endblock %}

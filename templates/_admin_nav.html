@@ -1,0 +1,9 @@
+<div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-8 gap-2 mb-6">
+  {% set links = [
+    ('admin_dashboard','Ringkasan','layout-dashboard'),('admin_periods','Periode','calendar-range'),
+    ('admin_recap','Rekap Nilai','chart-no-axes-combined'),('admin_devices','Perangkat','briefcase-business'),
+    ('admin_cash','Uang Kas','wallet'),('admin_students_page','Mahasiswa','users'),
+    ('admin_groups','Acak Kelompok','shuffle'),('admin_account','Akun Admin','user-round-cog')
+  ] %}
+  {% for endpoint,label,icon in links %}<a href="{{ url_for(endpoint) }}" class="glass rounded-xl px-3 py-3 text-[10px] sm:text-[11px] flex items-center gap-2 card-glow {{ 'border-emerald-400/50 text-emerald-200' if request.endpoint == endpoint else 'text-slate-400' }}"><i data-lucide="{{ icon }}" class="w-4 h-4 shrink-0"></i><span>{{ label }}</span></a>{% endfor %}
+</div>
