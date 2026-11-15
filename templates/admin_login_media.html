@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Video Login | Admin STI-A{% endblock %}
+{% block content %}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="section-kicker mb-2">LOGIN EXPERIENCE</div>
+  <h1 class="display-font text-3xl font-bold text-white">Kelola Video Halaman Login</h1>
+  <p class="text-xs text-slate-500 mt-2">Unggah intro baru, aktifkan video lama, atau hapus video yang tidak digunakan. Video aktif langsung tampil untuk semua pengunjung halaman login.</p>
+  {% include '_admin_nav.html' %}
+
+  <div class="grid lg:grid-cols-[.9fr_1.1fr] gap-5 mt-5">
+    <form method="POST" enctype="multipart/form-data" class="glass rounded-2xl p-5 h-fit">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+      <div class="flex items-center gap-3 mb-4"><div class="w-11 h-11 rounded-xl bg-sky-500/10 border border-sky-400/20 flex items-center justify-center"><i data-lucide="video" class="w-5 h-5 text-sky-300"></i></div><div><h2 class="font-bold text-white">Unggah Video Baru</h2><p class="text-[10px] text-slate-500">Setelah tersimpan, langsung aktif.</p></div></div>
+      <label class="text-xs text-slate-400 block mb-1">Nama video</label><input name="title" class="input-dark mb-3" maxlength="140" placeholder="Contoh: Intro STI-A Cyber Campus" required>
+      <label class="text-xs text-slate-400 block mb-1">File video</label><input type="file" name="video" accept=".mp4,.webm,video/mp4,video/webm" class="block w-full text-xs text-slate-400 file:mr-3 file:rounded-lg file:border-0 file:bg-sky-500/15 file:px-4 file:py-2 file:text-sky-200" required>
+      <p class="text-[10px] text-slate-600 mt-1 mb-3">Format MP4 atau WEBM. Ukuran unggahan maksimal 150 MB. Rasio 16:9 direkomendasikan agar tampilan video tidak terpotong.</p>
+      <label class="text-xs text-slate-400 block mb-1">Poster / gambar sampul (opsional)</label><input type="file" name="poster" accept=".png,.jpg,.jpeg,.webp,image/*" class="block w-full text-xs text-slate-400 file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-500/15 file:px-4 file:py-2 file:text-emerald-200">
+      <button class="btn-primary rounded-xl px-5 py-3 text-xs font-bold mt-5 w-full"><i data-lucide="upload" class="w-4 h-4 inline mr-1"></i> Unggah dan Aktifkan</button>
+    </form>
+
+    <div class="glass rounded-2xl p-5">
+      <div class="flex items-center justify-between gap-3 mb-3"><div><h2 class="font-bold text-white">Video yang Sedang Aktif</h2><p class="text-[10px] text-slate-500 mt-1">Preview tampilan login saat ini.</p></div><span class="text-[9px] uppercase tracking-wider rounded-full px-2.5 py-1 border border-emerald-400/25 bg-emerald-500/10 text-emerald-300">Aktif</span></div>
+      {% set active = media_items|selectattr('is_active')|first %}
+      {% if active %}<video controls muted playsinline class="w-full aspect-video rounded-xl bg-black object-contain"><source src="{{ url_for('static',filename='videos/login_admin/'+active.video_filename) }}" type="{{ 'video/webm' if active.video_filename.lower().endswith('.webm') else 'video/mp4' }}"></video><p class="text-sm font-semibold text-white mt-3">{{ active.title }}</p>
+      {% else %}<video controls muted playsinline poster="{{ url_for('static',filename='images/login-sti-poster.jpg') }}" class="w-full aspect-video rounded-xl bg-black object-contain"><source src="{{ url_for('static',filename='videos/login-sti.mp4') }}" type="video/mp4"></video><p class="text-sm font-semibold text-white mt-3">Video bawaan Portal STI-A</p><p class="text-[10px] text-slate-500 mt-1">Belum ada video tambahan dari admin.</p>{% endif %}
+      <a href="{{ url_for('login') }}" target="_blank" class="btn-muted inline-flex rounded-lg px-3 py-2 text-[10px] mt-4">Pratinjau halaman login ↗</a>
+    </div>
+  </div>
+
+  <div class="mt-8"><h2 class="font-bold text-white text-lg">Koleksi Video Login</h2><p class="text-[10px] text-slate-500 mt-1">Pilih video lama untuk mengaktifkannya kembali.</p>
+    <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
+      {% for item in media_items %}<article class="glass rounded-2xl p-4">
+        <video controls muted playsinline preload="metadata" poster="{{ url_for('static',filename=('images/login_admin/'+item.poster_filename) if item.poster_filename else 'images/login-sti-poster.jpg') }}" class="w-full aspect-video rounded-xl bg-black object-contain"><source src="{{ url_for('static',filename='videos/login_admin/'+item.video_filename) }}" type="{{ 'video/webm' if item.video_filename.lower().endswith('.webm') else 'video/mp4' }}"></video>
+        <div class="flex items-start justify-between gap-2 mt-3"><div class="min-w-0"><h3 class="text-sm font-semibold text-white truncate">{{ item.title }}</h3><p class="text-[10px] text-slate-500 mt-1">{{ item.created_at.strftime('%d %B %Y, %H:%M') }}</p></div>{% if item.is_active %}<span class="text-[9px] text-emerald-300 border border-emerald-400/25 rounded-full px-2 py-1">Aktif</span>{% endif %}</div>
+        <div class="flex items-center gap-2 mt-4">
+          {% if not item.is_active %}<form method="POST" action="{{ url_for('activate_login_media',media_id=item.id) }}" class="flex-1"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><button class="btn-primary w-full rounded-lg py-2 text-[10px] font-bold">Jadikan Aktif</button></form>{% else %}<span class="flex-1 text-center text-[10px] text-emerald-300 py-2">Digunakan di halaman login</span>{% endif %}
+          <form method="POST" action="{{ url_for('delete_login_media',media_id=item.id) }}" onsubmit="return confirm('Hapus video ini?')"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><button class="text-rose-300 border border-rose-400/20 rounded-lg px-3 py-2 text-[10px]">Hapus</button></form>
+        </div>
+      </article>{% else %}<div class="glass rounded-xl p-6 text-center text-xs text-slate-500 sm:col-span-2 xl:col-span-3">Belum ada video tambahan. Halaman login masih menggunakan video bawaan.</div>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Beranda | Portal Kelas STI-A{% endblock %}
+{% block content %}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-10">
+  <div class="grid lg:grid-cols-[1.25fr_.75fr] gap-5 items-stretch">
+    <div class="glass rounded-[2rem] p-6 sm:p-9 relative overflow-hidden">
+      <div class="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-emerald-400/10 blur-3xl"></div>
+      <div class="relative">
+        <div class="section-kicker mb-4">INSTITUT TEKNOLOGI SAWIT INDONESIA · STI-A</div>
+        <div class="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-[10px] text-emerald-200 mb-5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> CLASS COMMUNITY PORTAL</div>
+        <h1 class="display-font text-4xl sm:text-5xl xl:text-6xl font-bold leading-[1.05] text-white">Satu Kelas,<br><span class="gradient-text">Satu Sistem.</span></h1>
+        <p class="text-sm sm:text-base text-slate-400 max-w-xl leading-7 mt-5">Portal informasi, transparansi, evaluasi, dan kolaborasi mahasiswa Program Studi Sistem dan Teknologi Informasi kelas STI-A.</p>
+        <div class="flex flex-wrap gap-3 mt-7">
+          <a href="{{ url_for('directory') }}" class="btn-primary rounded-xl px-5 py-3 text-xs font-bold inline-flex items-center gap-2"><i data-lucide="users" class="w-4 h-4"></i> Direktori Mahasiswa</a>
+          <a href="{{ url_for('login') }}" class="btn-muted rounded-xl px-5 py-3 text-xs font-semibold inline-flex items-center gap-2"><i data-lucide="log-in" class="w-4 h-4"></i> Login Portal</a>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+      <div class="glass rounded-2xl p-5 card-glow"><div class="w-10 h-10 rounded-xl bg-emerald-400/10 text-emerald-300 flex items-center justify-center mb-5"><i data-lucide="users" class="w-5 h-5"></i></div><div class="digital-clock text-3xl text-white">{{ total_students }}</div><div class="text-xs text-slate-500 mt-1">Mahasiswa STI-A</div></div>
+      <div class="glass rounded-2xl p-5 card-glow"><div class="w-10 h-10 rounded-xl bg-cyan-400/10 text-cyan-300 flex items-center justify-center mb-5"><i data-lucide="badge-check" class="w-5 h-5"></i></div><div class="digital-clock text-3xl text-white">{{ active_device_count }}</div><div class="text-xs text-slate-500 mt-1">Perangkat kelas aktif</div></div>
+      <div class="glass rounded-2xl p-5 card-glow col-span-2"><div class="flex items-center justify-between gap-3"><div><div class="text-xs text-slate-500">Kas terkumpul {{ month_names[cash_month-1] }}</div><div class="text-2xl sm:text-3xl font-bold text-white mt-1">Rp{{ '{:,.0f}'.format(total_paid).replace(',', '.') }}</div><div class="text-[10px] text-slate-500 mt-1">{{ completion }}% dari tagihan tercatat</div></div><div class="w-12 h-12 rounded-2xl bg-amber-400/10 text-amber-300 flex items-center justify-center"><i data-lucide="wallet" class="w-6 h-6"></i></div></div><div class="h-2 rounded-full bg-slate-700/50 mt-4 overflow-hidden"><div class="h-full rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400" style="width:{{ completion }}%"></div></div></div>
+    </div>
+  </div>
+
+  <div class="mt-8 flex items-end justify-between gap-3"><div><div class="section-kicker mb-2">QUICK ACCESS</div><h2 class="display-font text-2xl sm:text-3xl font-bold text-white">Jelajahi Portal</h2><p class="text-xs text-slate-500 mt-1">Pilih menu untuk membuka informasi yang dibutuhkan.</p></div></div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 mt-4">
+    <a href="{{ url_for('directory') }}" class="glass rounded-2xl p-5 card-glow menu-card"><div class="flex justify-between"><i data-lucide="contact-round" class="w-6 h-6 text-emerald-300"></i><i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500"></i></div><h3 class="font-bold text-white mt-6">Direktori Mahasiswa</h3><p class="text-xs text-slate-500 mt-1 leading-5">Lihat biodata, foto, dan informasi anggota kelas.</p></a>
+    <a href="{{ url_for('public_cash') }}" class="glass rounded-2xl p-5 card-glow menu-card"><div class="flex justify-between"><i data-lucide="wallet" class="w-6 h-6 text-amber-300"></i><i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500"></i></div><h3 class="font-bold text-white mt-6">Transparansi Uang Kas</h3><p class="text-xs text-slate-500 mt-1 leading-5">Periksa status pembayaran kas per bulan.</p></a>
+    <a href="{{ url_for('index') }}#peringkat" class="glass rounded-2xl p-5 card-glow menu-card"><div class="flex justify-between"><i data-lucide="trophy" class="w-6 h-6 text-yellow-300"></i><i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500"></i></div><h3 class="font-bold text-white mt-6">Peringkat Sikap</h3><p class="text-xs text-slate-500 mt-1 leading-5">Lihat hasil penilaian sikap bulanan mahasiswa.</p></a>
+    <a href="{{ url_for('index') }}#kinerja" class="glass rounded-2xl p-5 card-glow menu-card"><div class="flex justify-between"><i data-lucide="shield-check" class="w-6 h-6 text-cyan-300"></i><i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500"></i></div><h3 class="font-bold text-white mt-6">Kinerja Perangkat</h3><p class="text-xs text-slate-500 mt-1 leading-5">Hasil evaluasi perangkat kelas per bulan.</p></a>
+    <a href="{{ url_for('public_groups') }}" class="glass rounded-2xl p-5 card-glow menu-card"><div class="flex justify-between"><i data-lucide="users-round" class="w-6 h-6 text-pink-300"></i><i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500"></i></div><h3 class="font-bold text-white mt-6">Pembagian Kelompok</h3><p class="text-xs text-slate-500 mt-1 leading-5">Lihat kelompok tugas, mata kuliah, materi, dan anggota.</p></a>
+    <a href="{{ url_for('public_album') }}" class="glass rounded-2xl p-5 card-glow menu-card"><div class="flex justify-between"><i data-lucide="images" class="w-6 h-6 text-violet-300"></i><i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500"></i></div><h3 class="font-bold text-white mt-6">Album Kelas</h3><p class="text-xs text-slate-500 mt-1 leading-5">Lihat dokumentasi kegiatan dan momen STI-A.</p></a>
+  </div>
+
+  <section id="kas-terkini" class="mt-10 scroll-mt-24">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3"><div><div class="section-kicker mb-2">OPEN CASH TRANSPARENCY</div><h2 class="display-font text-2xl sm:text-3xl text-white font-bold">Pembayaran Kas per Mahasiswa</h2><p class="text-xs text-slate-500 mt-1">{{ month_names[cash_month-1] }} {{ cash_year }} · Nominal dibayar dibandingkan dengan tagihan.</p></div><div class="flex flex-wrap items-center gap-2"><form method="GET" class="flex gap-2"><input type="hidden" name="ranking_period_id" value="{{ ranking_period.id if ranking_period else '' }}"><select name="cash_month" class="input-dark !w-auto text-[10px]" onchange="this.form.submit()">{% for month_name in month_names %}<option value="{{ loop.index }}" {{ 'selected' if cash_month == loop.index else '' }}>{{ month_name }}</option>{% endfor %}</select><select name="cash_year" class="input-dark !w-auto text-[10px]" onchange="this.form.submit()">{% for yr in [2025,2026,2027] %}<option value="{{ yr }}" {{ 'selected' if cash_year == yr else '' }}>{{ yr }}</option>{% endfor %}</select></form><a href="{{ url_for('public_cash',year=cash_year) }}" class="btn-muted rounded-xl px-4 py-2.5 text-[10px]">Rincian 12 bulan →</a></div></div>
+    <div class="glass rounded-2xl p-4 mt-4"><div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 max-h-[520px] overflow-y-auto pr-1">
+      {% for item in cash_student_rows %}{% set row = item.row %}
+      <div class="rounded-xl border border-white/5 bg-slate-950/25 p-3 flex items-center gap-3"><div class="avatar-fallback w-9 h-9 rounded-lg text-[10px] shrink-0">{{ item.student.initials }}</div><div class="min-w-0 flex-1"><div class="text-xs font-semibold text-slate-200 truncate">{{ item.student.name }}</div><div class="text-[9px] text-slate-600">{{ item.student.nim }}</div><div class="text-[10px] text-slate-400 mt-1">{{ 'Rp{:,.0f}'.format(row.amount_paid).replace(',', '.') if row else 'Rp0' }} <span class="text-slate-600">/ {{ 'Rp{:,.0f}'.format(row.amount_due).replace(',', '.') if row else 'tagihan belum dicatat' }}</span></div></div><span class="shrink-0 rounded-full px-2 py-1 text-[9px] {{ 'status-lunas' if row and row.status == 'Lunas' else ('status-menyicil' if row and row.status == 'Menyicil' else ('status-belum' if row else 'status-kosong')) }}">{{ row.status if row else 'Belum Dicatat' }}</span></div>
+      {% endfor %}
+    </div></div>
+  </section>
+
+  <section id="peringkat" class="mt-10 scroll-mt-24">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3"><div><div class="section-kicker mb-2">MONTHLY RECOGNITION</div><h2 class="display-font text-2xl sm:text-3xl text-white font-bold">Peringkat Sikap Bulanan Mahasiswa</h2><p class="text-xs text-slate-500 mt-1">{{ ranking_period.name if ranking_period else 'Belum ada periode penilaian' }}</p></div>
+      {% if ranking_periods %}<form method="GET"><select name="ranking_period_id" class="input-dark !w-auto text-xs" onchange="this.form.submit()">{% for period in ranking_periods %}<option value="{{ period.id }}" {{ 'selected' if ranking_period and period.id == ranking_period.id else '' }}>{{ period.name }}</option>{% endfor %}</select></form>{% endif %}
+    </div>
+    {% if monthly_ranking %}<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">{% for item in monthly_ranking[:6] %}
+      <div class="glass rounded-2xl p-4 flex items-center gap-3 card-glow"><div class="w-10 h-10 rounded-xl flex items-center justify-center font-bold digital-clock {{ 'bg-amber-400/15 text-amber-200' if loop.index == 1 else 'bg-slate-700/60 text-slate-300' }}">{{ '%02d'|format(loop.index) }}</div>{% if item.student.photo %}<img src="{{ url_for('static',filename='uploads/'+item.student.photo) }}" class="w-11 h-11 rounded-xl object-cover" alt="Foto {{ item.student.name }}">{% else %}<div class="avatar-fallback w-11 h-11 rounded-xl">{{ item.student.initials }}</div>{% endif %}<div class="min-w-0 flex-1"><div class="font-semibold text-white text-sm truncate">{{ item.student.name }}</div><div class="text-[10px] text-slate-500">{{ item.student.nim }} · {{ item.count }} penilaian</div></div><div class="text-right"><div class="digital-clock text-lg text-emerald-300">{{ '%.2f'|format(item.overall) }}</div><div class="text-[9px] text-slate-600">/ 5.00</div></div></div>
+    {% endfor %}</div>{% else %}<div class="glass rounded-2xl p-8 mt-4 text-center text-sm text-slate-500">Belum ada penilaian pada periode ini.</div>{% endif %}
+  </section>
+
+  <section id="kinerja" class="mt-10 scroll-mt-24">
+    <div><div class="section-kicker mb-2">CLASS OFFICERS PERFORMANCE</div><h2 class="display-font text-2xl sm:text-3xl text-white font-bold">Kinerja Perangkat Kelas</h2><p class="text-xs text-slate-500 mt-1">Ringkasan hasil penilaian kinerja jabatan perangkat kelas.</p></div>
+    {% if device_ranking %}<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">{% for item in device_ranking[:6] %}
+      <div class="glass rounded-2xl p-5 card-glow"><div class="flex items-center justify-between gap-2"><span class="text-[10px] tracking-wider uppercase text-cyan-300">{{ item.jabatan }}</span><span class="text-[10px] text-slate-500">{{ item.count }} penilai</span></div><div class="flex items-center gap-3 mt-4">{% if item.holder_photo %}<img src="{{ url_for('static',filename='uploads/'+item.holder_photo) }}" class="w-12 h-12 object-cover rounded-xl" alt="Foto {{ item.holder_name }}">{% else %}<div class="avatar-fallback w-12 h-12 rounded-xl">{{ item.holder_name.split()[0][:1] }}</div>{% endif %}<div class="min-w-0"><div class="font-semibold text-white text-sm truncate">{{ item.holder_name }}</div><div class="text-[10px] text-slate-500">{{ item.holder_nim }}</div></div><div class="ml-auto digital-clock text-xl text-cyan-300">{{ '%.2f'|format(item.overall) }}</div></div></div>
+    {% endfor %}</div>{% else %}<div class="glass rounded-2xl p-8 mt-4 text-center text-sm text-slate-500">Hasil evaluasi perangkat kelas akan tampil setelah mahasiswa mulai menilai.</div>{% endif %}
+  </section>
+</section>
+{% endblock %}

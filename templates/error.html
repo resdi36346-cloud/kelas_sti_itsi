@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}{{ code }} – Portal STI{% endblock %}
+{% block content %}
+<section class="max-w-3xl mx-auto px-4 py-24 text-center">
+  <div class="glass rounded-3xl p-10 sm:p-14"><div class="text-6xl sm:text-7xl display-font font-bold gradient-text">{{ code }}</div><h1 class="display-font text-2xl font-bold text-white mt-4">Ada kendala pada permintaan</h1><p class="text-sm text-slate-400 mt-3 leading-6">{{ message }}</p><a href="{{ url_for('index') }}" class="btn-primary inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold mt-7"><i data-lucide="home" class="w-4 h-4"></i> Kembali ke Beranda</a></div>
+</section>
+{% endblock %}

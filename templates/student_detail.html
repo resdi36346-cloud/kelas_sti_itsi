@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Biodata {{ student.name }} | STI-A{% endblock %}
+{% block content %}
+<section class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+  <a href="{{ url_for('directory') }}" class="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-emerald-300 mb-5"><i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Direktori</a>
+  <div class="glass rounded-[2rem] overflow-hidden">
+    <div class="h-28 sm:h-40 bg-gradient-to-r from-emerald-500/20 via-cyan-500/10 to-indigo-500/20"></div>
+    <div class="px-5 sm:px-10 pb-8 text-center -mt-20">
+      {% if student.photo %}<img src="{{ url_for('static',filename='uploads/'+student.photo) }}" alt="Foto {{ student.name }}" class="w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover mx-auto border-4 border-slate-900 shadow-2xl">{% else %}<div class="avatar-fallback w-36 h-36 sm:w-44 sm:h-44 text-4xl rounded-full mx-auto border-4 border-slate-900 shadow-2xl">{{ student.initials }}</div>{% endif %}
+      <div class="section-kicker mt-5">BIODATA MAHASISWA · STI-A</div>
+      <h1 class="display-font text-2xl sm:text-3xl font-bold text-white mt-2">{{ student.name }}</h1>
+      <div class="text-sm text-emerald-300 mt-2">{{ student.nim }}</div>
+      <div class="inline-flex mt-3 rounded-full px-4 py-1.5 bg-cyan-400/10 text-cyan-300 text-xs">{{ student.position or 'Anggota' }}</div>
+      <div class="grid sm:grid-cols-2 gap-3 text-left mt-8">
+        {% for label,value in [('Jenis Kelamin',student.gender),('Tanggal Lahir',student.birth_date.strftime('%d %B %Y') if student.birth_date else None),('Asal Daerah',student.origin),('Hobi',student.hobbies),('Moto Hidup',student.motto)] %}
+          <div class="rounded-xl bg-slate-950/35 border border-white/5 p-4 {{ 'sm:col-span-2' if label in ['Hobi','Moto Hidup'] else '' }}"><div class="text-[10px] text-slate-500 uppercase tracking-wider">{{ label }}</div><div class="text-sm text-slate-200 mt-1">{{ value or 'Belum dilengkapi' }}</div></div>
+        {% endfor %}
+      </div>
+      <div class="flex flex-wrap justify-center gap-2 mt-5">{% if student.instagram %}<span class="btn-muted rounded-xl px-3 py-2 text-xs">Instagram: {{ student.instagram }}</span>{% endif %}{% if student.linkedin %}<span class="btn-muted rounded-xl px-3 py-2 text-xs">LinkedIn: {{ student.linkedin }}</span>{% endif %}{% if student.tiktok %}<span class="btn-muted rounded-xl px-3 py-2 text-xs">TikTok: {{ student.tiktok }}</span>{% endif %}</div>
+    </div>
+  </div>
+</section>
+{% endblock %}

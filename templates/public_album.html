@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Album Kelas | Portal STI-A{% endblock %}
+{% block content %}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <a href="{{ url_for('index') }}" class="inline-flex text-xs text-slate-400 hover:text-emerald-300 items-center gap-2 mb-4"><i data-lucide="arrow-left" class="w-4 h-4"></i> Beranda</a>
+  <div class="section-kicker mb-2">STI-A MOMENTS</div>
+  <h1 class="display-font text-3xl sm:text-4xl font-bold text-white">Album Kegiatan Kelas</h1>
+  <p class="text-xs sm:text-sm text-slate-500 mt-2">Dokumentasi kegiatan dan momen kebersamaan mahasiswa STI-A.</p>
+  {% if photos %}
+  <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 mt-6">
+    {% for photo in photos %}
+    <article class="glass rounded-2xl overflow-hidden card-glow">
+      <a href="{{ url_for('static', filename='uploads/'+photo.filename) }}" target="_blank" rel="noopener" class="block aspect-[4/3] bg-slate-950/50"><img src="{{ url_for('static', filename='uploads/'+photo.filename) }}" alt="{{ photo.title }}" loading="lazy" class="w-full h-full object-cover"></a>
+      <div class="p-3 sm:p-4"><h2 class="font-semibold text-white text-xs sm:text-sm">{{ photo.title }}</h2>{% if photo.caption %}<p class="text-[10px] sm:text-xs text-slate-500 mt-1 leading-5">{{ photo.caption }}</p>{% endif %}<div class="text-[9px] text-slate-600 mt-2">{{ photo.created_at.strftime('%d %B %Y') }}</div></div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="glass rounded-2xl p-10 sm:p-14 text-center mt-6"><div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-400/10 text-emerald-300 flex items-center justify-center"><i data-lucide="images" class="w-7 h-7"></i></div><h2 class="font-bold text-white mt-4">Album belum memiliki foto</h2><p class="text-xs text-slate-500 mt-2">Foto kegiatan STI-A akan ditampilkan di halaman ini setelah admin mengunggahnya.</p></div>
+  {% endif %}
+</section>
+{% endblock %}

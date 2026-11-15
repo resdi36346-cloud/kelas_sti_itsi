@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Album Kelas | Admin STI-A{% endblock %}
+{% block content %}
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="section-kicker mb-2">PUBLIC CLASS GALLERY</div>
+  <h1 class="display-font text-3xl font-bold text-white">Manajemen Album Kelas</h1>
+  <p class="text-xs text-slate-500 mt-2">Unggah, ubah judul dan keterangan, sembunyikan, atau hapus foto yang tampil di halaman publik.</p>
+  {% include '_admin_nav.html' %}
+  <form method="POST" enctype="multipart/form-data" class="glass rounded-2xl p-5 mt-5">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+    <h2 class="font-bold text-white">Tambah Foto ke Album Publik</h2>
+    <div class="grid md:grid-cols-2 gap-3 mt-4">
+      <div><label class="text-xs text-slate-400 block mb-1">Judul / nama kegiatan</label><input name="title" class="input-dark" maxlength="140" placeholder="Contoh: Kebersamaan STI-A" required></div>
+      <div><label class="text-xs text-slate-400 block mb-1">Keterangan (opsional)</label><input name="caption" class="input-dark" maxlength="500" placeholder="Ceritakan singkat kegiatan..." ></div>
+    </div>
+    <div class="mt-3"><label class="text-xs text-slate-400 block mb-1">Pilih foto (bisa lebih dari satu)</label><input type="file" name="photos" accept=".png,.jpg,.jpeg,.webp" multiple required class="block w-full text-xs text-slate-400 file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-500/15 file:text-emerald-200 file:px-4 file:py-2 file:text-xs"><p class="text-[10px] text-slate-600 mt-1">Format PNG, JPG, JPEG, WEBP. Maksimal 20 MB total per pengiriman.</p></div>
+    <button class="btn-primary rounded-xl px-5 py-3 text-xs font-bold mt-4"><i data-lucide="upload" class="w-4 h-4 inline mr-1"></i> Unggah Foto</button>
+  </form>
+
+  <div class="flex items-end justify-between gap-3 mt-8"><div><h2 class="font-bold text-white text-lg">Foto yang Tersimpan</h2><p class="text-[10px] text-slate-500 mt-1">{{ photos|length }} foto di dalam galeri.</p></div><a href="{{ url_for('public_album') }}" target="_blank" class="btn-muted rounded-lg px-3 py-2 text-[10px]">Lihat Album Publik ↗</a></div>
+  <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
+    {% for photo in photos %}
+    <article class="glass rounded-2xl overflow-hidden">
+      <div class="aspect-[16/10] bg-slate-950/50"><img src="{{ url_for('static',filename='uploads/'+photo.filename) }}" alt="{{ photo.title }}" class="w-full h-full object-cover"></div>
+      <form method="POST" enctype="multipart/form-data" action="{{ url_for('edit_album_photo',photo_id=photo.id) }}" class="p-4 space-y-2">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <label class="text-[10px] text-slate-500">Judul</label><input name="title" value="{{ photo.title }}" maxlength="140" class="input-dark text-xs" required>
+        <label class="text-[10px] text-slate-500">Keterangan</label><textarea name="caption" maxlength="500" rows="2" class="input-dark text-xs">{{ photo.caption or '' }}</textarea>
+        <label class="text-[10px] text-slate-500 block">Ganti file foto (opsional)</label><input type="file" name="photo" accept=".png,.jpg,.jpeg,.webp" class="block w-full text-[10px] text-slate-400">
+        <label class="flex items-center gap-2 text-[10px] text-slate-400"><input type="checkbox" name="is_public" class="accent-emerald-500" {{ 'checked' if photo.is_public else '' }}> Tampilkan di halaman publik</label>
+        <div class="flex items-center justify-between gap-2"><button class="btn-primary rounded-lg px-3 py-2 text-[10px]">Simpan</button><span class="text-[9px] text-slate-600">{{ photo.created_at.strftime('%d-%m-%Y') }}</span></div>
+      </form>
+      <form method="POST" action="{{ url_for('delete_album_photo',photo_id=photo.id) }}" class="px-4 pb-4" onsubmit="return confirm('Hapus foto ini dari album?')"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><button class="text-rose-300 text-[10px]">Hapus foto</button></form>
+    </article>
+    {% else %}<div class="glass rounded-2xl p-8 text-center text-xs text-slate-500 sm:col-span-2 xl:col-span-3">Belum ada foto. Unggah foto pertama menggunakan formulir di atas.</div>{% endfor %}
+  </div>
+</section>
+{% endblock %}
