@@ -6,3 +6,9 @@ venv/
 kelas_sti.db
 static/uploads/*
 !static/uploads/.gitkeep
+# Turso CLI / local temporary files
+.turso/
+turso-cli/
+turso-cli.zip
+auth
+auth-wal
