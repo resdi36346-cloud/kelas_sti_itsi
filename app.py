@@ -30,10 +30,18 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(LOGIN_VIDEO_FOLDER, exist_ok=True)
 os.makedirs(LOGIN_POSTER_FOLDER, exist_ok=True)
 
+DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
+
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+if not DATABASE_URL:
+    DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'kelas_sti.db')}"
+
 app = Flask(__name__)
 app.config.update(
     SECRET_KEY=os.environ.get("SECRET_KEY", "ganti-secret-key-portal-sti-itsi"),
-    SQLALCHEMY_DATABASE_URI=f"sqlite:///{os.path.join(BASE_DIR, 'kelas_sti.db')}",
+    SQLALCHEMY_DATABASE_URI=DATABASE_URL,
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
     MAX_CONTENT_LENGTH=150 * 1024 * 1024,
     UPLOAD_FOLDER=UPLOAD_FOLDER,
@@ -689,6 +697,7 @@ def admin_periods():
         primary_period_ids=primary_period_ids, particles_enabled=False,
     )
 
+
 @app.route("/admin/periods/<int:period_id>/toggle", methods=["POST"])
 @role_required("admin")
 def toggle_period(period_id):
@@ -767,7 +776,7 @@ def admin_devices():
         "admin_devices.html", students=students, devices=devices,
         device_ratings=device_ratings, device_summary=device_summary,
         periods=periods, selected_period=selected_period,
-        expected_raters=max(len(students)-1, 0), particles_enabled=False,
+        expected_raters=max(len(students) - 1, 0), particles_enabled=False,
     )
 
 
@@ -1134,6 +1143,7 @@ def remove_group_member(group_set_id, member_id):
     db.session.commit()
     flash(f"{name} dikeluarkan dari pembagian kelompok ini.", "info")
     return redirect(url_for("admin_groups"))
+
 
 @app.route("/admin/kelompok/<int:group_set_id>/delete", methods=["POST"])
 @role_required("admin")
