@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Masuk – Portal Kelas STI-A | ITSI{% endblock %}
+{% block body_class %}login-page-body{% endblock %}
+{% block head %}
+<style>
+  body.login-page-body { background:#020713; }
+  body.login-page-body header { background:rgba(2,7,19,.82) !important; border-color:rgba(125,211,252,.12) !important; }
+  body.login-page-body header nav, body.login-page-body header #mobileMenuToggle, body.login-page-body header a[href$="/login"] { display:none !important; }
+  body.login-page-body footer { margin-top:0 !important; background:rgba(2,7,19,.48); }
+  body.login-page-body #tsparticles { display:none !important; }
+  .login-screen { min-height:calc(100svh - 132px); display:flex; align-items:center; justify-content:center; padding:2rem 1.25rem; }
+  .login-frame { width:100%; max-width:1360px; display:grid; grid-template-columns:minmax(0,1.34fr) minmax(380px,.86fr); overflow:hidden; border:1px solid rgba(125,211,252,.22); border-radius:2rem; background:rgba(3,9,24,.82); box-shadow:0 30px 100px rgba(0,0,0,.48),0 0 55px rgba(14,165,233,.09); }
+  .login-visual-panel { min-width:0; display:flex; flex-direction:column; background:linear-gradient(155deg,rgba(4,13,31,.96),rgba(2,7,19,.98)); border-right:1px solid rgba(125,211,252,.12); }
+  .login-video-stage { position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; background:#020817; border-bottom:1px solid rgba(125,211,252,.15); }
+  .login-video-stage video { display:block; width:100%; height:100%; object-fit:contain; object-position:center center; background:#020817; }
+  .login-video-stage::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,rgba(2,8,23,.08),transparent 24%,transparent 76%,rgba(2,8,23,.16)); }
+  .login-video-placeholder { position:absolute; inset:0; display:none; place-items:center; color:#7dd3fc; background:radial-gradient(circle at 50% 45%,#0e7490,#020817 70%); }
+  .login-visual-copy { padding:1.65rem 2rem 1.9rem; display:grid; grid-template-columns:1fr auto; align-items:end; gap:1.3rem; }
+  .login-brand { display:inline-flex; align-items:center; gap:.65rem; width:max-content; max-width:100%; border:1px solid rgba(125,211,252,.25); background:rgba(2,8,23,.56); padding:.48rem .75rem; border-radius:999px; color:#dbeafe; font-size:.62rem; font-weight:800; letter-spacing:.14em; }
+  .login-brand-mark { width:1.65rem; height:1.65rem; display:grid; place-items:center; border-radius:.58rem; background:linear-gradient(135deg,#0891b2,#2563eb); color:white; }
+  .login-caption { min-width:0; margin-top:.9rem; }
+  .login-caption h1 { font-family:'Space Grotesk',sans-serif; color:white; font-size:clamp(1.7rem,2.5vw,2.55rem); line-height:1.08; font-weight:800; letter-spacing:-.04em; }
+  .login-caption p { max-width:40rem; color:rgba(219,234,254,.78); font-size:.88rem; line-height:1.7; margin-top:.7rem; }
+  .login-visual-meta { display:flex; flex-direction:column; gap:.55rem; align-items:flex-end; padding-bottom:.15rem; }
+  .login-visual-meta span { display:inline-flex; align-items:center; white-space:nowrap; gap:.4rem; padding:.48rem .68rem; border:1px solid rgba(125,211,252,.2); border-radius:999px; background:rgba(2,8,23,.48); color:#dbeafe; font-size:.64rem; }
+  .login-form-panel { min-width:0; display:flex; flex-direction:column; justify-content:center; padding:clamp(1.65rem,3vw,3rem); background:linear-gradient(145deg,rgba(8,18,39,.97),rgba(5,11,25,.99)); }
+  .login-form-panel .section-kicker { color:#7dd3fc; }
+  .login-form-panel .input-dark { background:rgba(2,8,23,.72); border-color:rgba(125,211,252,.2); }
+  .login-form-panel .input-dark:focus { border-color:#38bdf8; box-shadow:0 0 0 3px rgba(56,189,248,.13); }
+  .login-submit { background:linear-gradient(110deg,#0369a1,#2563eb); border:1px solid rgba(125,211,252,.36); box-shadow:0 10px 28px rgba(37,99,235,.18); }
+  .login-submit:hover { filter:brightness(1.14); box-shadow:0 0 26px rgba(56,189,248,.26); transform:translateY(-1px); }
+  .login-secure-line { display:flex; align-items:center; justify-content:center; gap:.45rem; color:#64748b; font-size:.68rem; margin-top:1.35rem; text-align:center; }
+  @media(max-width:1050px) { .login-screen { padding:1.4rem 1rem 2rem; } .login-frame { max-width:850px; grid-template-columns:1fr; } .login-visual-panel { border-right:0; border-bottom:1px solid rgba(125,211,252,.12); } .login-visual-copy { padding:1.35rem 1.5rem 1.55rem; } .login-form-panel { padding:2rem clamp(1.5rem,6vw,3rem) 2.2rem; } }
+  @media(max-width:560px) { .login-screen { padding:.85rem .6rem 1.4rem; min-height:auto; } .login-frame { border-radius:1.35rem; } .login-video-stage { aspect-ratio:16/9; } .login-visual-copy { display:block; padding:1.1rem 1rem 1.2rem; } .login-brand { font-size:.53rem; padding:.4rem .6rem; } .login-brand-mark { width:1.45rem; height:1.45rem; } .login-caption { margin-top:.75rem; } .login-caption h1 { font-size:1.45rem; } .login-caption p { font-size:.75rem; line-height:1.55; margin-top:.42rem; } .login-visual-meta { flex-direction:row; flex-wrap:wrap; align-items:flex-start; margin-top:.85rem; } .login-visual-meta span { font-size:.58rem; padding:.4rem .55rem; } .login-form-panel { padding:1.55rem 1.2rem 1.65rem; } }
+  @media(prefers-reduced-motion:reduce) { .login-video-stage video { display:none; } .login-video-placeholder { display:grid; } }
+</style>
+{% endblock %}
+{% block content %}
+<section class="login-screen">
+  <div class="login-frame">
+    <div class="login-visual-panel">
+      <div class="login-video-stage">
+        <div class="login-video-placeholder" aria-hidden="true"><i data-lucide="orbit" class="w-12 h-12"></i></div>
+        <video id="loginIntroVideo" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="{{ login_poster_src }}" aria-label="Video intro Portal Kelas STI-A ITSI">
+          <source src="{{ login_video_src }}" type="{{ 'video/webm' if login_video_src.lower().endswith('.webm') else 'video/mp4' }}">
+        </video>
+      </div>
+      <div class="login-visual-copy">
+        <div class="min-w-0">
+          <div class="login-brand"><span class="login-brand-mark"><i data-lucide="network" class="w-4 h-4"></i></span><span>STI-A <span class="text-sky-300">·</span> ITSI DIGITAL CAMPUS</span></div>
+          <div class="login-caption">
+            <h1>Satu kelas. Satu ekosistem.</h1>
+            <p>Ruang digital mahasiswa Sistem dan Teknologi Informasi untuk belajar, berkolaborasi, dan bertumbuh bersama.</p>
+          </div>
+        </div>
+        <div class="login-visual-meta">
+          <span><i data-lucide="users" class="w-3.5 h-3.5 text-sky-300"></i> 30 Mahasiswa</span>
+          <span><i data-lucide="cpu" class="w-3.5 h-3.5 text-cyan-300"></i> Agri-Tech & Cyber</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-form-panel">
+      <div class="w-14 h-14 rounded-2xl bg-sky-400/10 border border-sky-300/25 flex items-center justify-center mb-6 shadow-[0_0_28px_rgba(56,189,248,.12)]">
+        <i data-lucide="fingerprint" class="w-7 h-7 text-sky-300"></i>
+      </div>
+      <div class="section-kicker mb-2">SECURE MEMBER ACCESS</div>
+      <h2 class="display-font text-3xl sm:text-4xl font-bold text-white">Selamat datang kembali.</h2>
+      <p class="text-sm text-slate-400 mt-3 mb-8 leading-6">Masuk untuk mengakses ruang kelas digital STI-A. Gunakan NIM atau username dan password akun Anda.</p>
+      <form method="POST" action="{{ url_for('login') }}" class="space-y-5">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <div>
+          <label for="identity" class="text-xs text-slate-300 font-semibold mb-2 block">NIM / Username</label>
+          <div class="relative"><i data-lucide="user-round" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i><input id="identity" name="identity" class="input-dark pl-11" placeholder="Masukkan NIM atau username" autocomplete="username" required autofocus></div>
+        </div>
+        <div>
+          <label for="password" class="text-xs text-slate-300 font-semibold mb-2 block">Password</label>
+          <div class="relative"><i data-lucide="lock-keyhole" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2"></i><input id="password" name="password" type="password" class="input-dark pl-11 pr-12" placeholder="Masukkan password" autocomplete="current-password" required><button type="button" id="togglePassword" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-sky-300" aria-label="Tampilkan password"><i data-lucide="eye" class="w-4 h-4"></i></button></div>
+        </div>
+        <button type="submit" class="login-submit w-full rounded-xl py-3.5 font-bold text-sm text-white flex items-center justify-center gap-2 transition-all">Masuk ke Dashboard <i data-lucide="arrow-up-right" class="w-4 h-4"></i></button>
+      </form>
+      <a href="{{ url_for('index') }}" class="mt-6 flex justify-center items-center gap-2 text-xs text-slate-500 hover:text-sky-300 transition"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali ke halaman publik</a>
+      <div class="login-secure-line"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-sky-400"></i> Koneksi akses khusus anggota STI-A dan administrator</div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  document.getElementById('togglePassword')?.addEventListener('click', function () {
+    const input = document.getElementById('password'); const visible = input.type === 'password';
+    input.type = visible ? 'text' : 'password';
+    this.innerHTML = visible ? '<i data-lucide="eye-off" class="w-4 h-4"></i>' : '<i data-lucide="eye" class="w-4 h-4"></i>';
+    this.setAttribute('aria-label', visible ? 'Sembunyikan password' : 'Tampilkan password');
+    if (window.lucide) window.lucide.createIcons();
+  });
+  const introVideo = document.getElementById('loginIntroVideo');
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (introVideo) {
+    if (reduceMotion) introVideo.pause();
+    introVideo.addEventListener('error', () => { introVideo.style.display = 'none'; const fallback = introVideo.parentElement?.querySelector('.login-video-placeholder'); if (fallback) fallback.style.display = 'grid'; });
+    const attemptPlay = introVideo.play(); if (attemptPlay && typeof attemptPlay.catch === 'function') attemptPlay.catch(() => {});
+  }
+</script>
+{% endblock %}
